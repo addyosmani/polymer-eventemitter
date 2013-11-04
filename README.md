@@ -16,6 +16,70 @@ Event emitters trigger an event to which anyone can listen. Different libraries 
 
 I'll be trying to add some of these features.
 
+Ideally this might look like:
+
+```html
+<!--wildcards-->
+<polymer-element name="my-app">
+  <template>
+    <polymer-signals on-polymer-signal-wildcard="{{fooSignal}}"></polymer-signals>
+    <content></cotnent>
+  </template>
+  <script>
+    Polymer('my-app', {
+      fooSignal: function(e, detail, sender) {
+        this.innerHTML += '<br>[my-app] got a [' + detail + '] signal<br>';
+      }
+    });
+  </script>
+</polymer-element>
+
+<!--deliminators-->
+<polymer-element name="my-app">
+  <template>
+    <polymer-signals on-polymer-signal-addy::foo="{{fooSignal}}" deliminator="::"></polymer-signals>
+    <content></cotnent>
+  </template>
+  <script>
+    Polymer('my-app', {
+      fooSignal: function(e, detail, sender) {
+        this.innerHTML += '<br>[my-app] got a [' + detail + '] signal<br>';
+      }
+    });
+  </script>
+</polymer-element>
+
+<!--max listeners-->
+<polymer-element name="my-app">
+  <template>
+    <polymer-signals on-polymer-signal-foo="{{fooSignal}}" maxListeners="10"></polymer-signals>
+    <content></cotnent>
+  </template>
+  <script>
+    Polymer('my-app', {
+      fooSignal: function(e, detail, sender) {
+        this.innerHTML += '<br>[my-app] got a [' + detail + '] signal<br>';
+      }
+    });
+  </script>
+</polymer-element>
+
+<!--many-->
+<polymer-element name="my-app">
+  <template>
+    <polymer-signals on-polymer-signal-foo="{{fooSignal}}" many="4"></polymer-signals>
+    <content></cotnent>
+  </template>
+  <script>
+    Polymer('my-app', {
+      fooSignal: function(e, detail, sender) {
+        this.innerHTML += '<br>[my-app] got a [' + detail + '] signal<br>';
+      }
+    });
+  </script>
+</polymer-element>
+```
+
 **Reference**
 
 * https://github.com/hij1nx/EventEmitter2
