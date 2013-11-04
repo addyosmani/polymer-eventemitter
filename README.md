@@ -11,7 +11,7 @@ Event emitters trigger an event to which anyone can listen. Different libraries 
 * Namespaces
 * Time to listen
 * Deliminators
-* Now/many
+* Once/many
 * Max listeners
 
 I'll be trying to add some of these features.
