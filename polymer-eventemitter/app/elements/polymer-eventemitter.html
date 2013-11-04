@@ -1,0 +1,154 @@
+<!--
+Copyright 2013 The Polymer Authors. All rights reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file.
+
+Maintainer:
+Addy Osmani
+
+Notes:
+Each element is able to observe a set of events
+Each element with many="N" should only fire N times then be removed
+
+'many' is actually an extension of how this.asyncFire works.
+-->
+<polymer-element name="polymer-eventemitter" attributes="many maxListeners deliminator">
+    <script>
+        (function () {
+
+            // namespace
+            var namespace = 'on-polymer-eventemitter-';
+
+            // queue of signal elements
+            var elementsPool = [];
+
+            // registry of events to be notified
+            var eventRegistry = {
+                'default': {
+                    many: 0,
+                    timesCalled: 0
+                }
+            };
+
+            Polymer('polymer-eventemitter', {
+                /**
+                 * @many: number of times element notifications can be run
+                 */
+                many: 0,
+                /**
+                 * @maxListeners: maximum number of elements that can listen
+                 * to another element.
+                 */
+                maxListeners: 10,
+                 /**
+                 * @delimiter: the separator used to further namespace events
+                 */
+                delimiter: '',
+                enteredView: function () {
+                    var observedEvents  = [];
+                    var currentEvent = "";
+                    var manyLimit = parseInt(this.many, 10) || null;
+
+                    // iterate over element attributes for events
+                    for (var i=0, attrs=this.attributes, l=attrs.length; i<l; i++){
+                        observedEvents.push(attrs.item(i).nodeName);
+                    }
+
+                    // for those events which are eventemitter specific..
+                    // add their many value to the registry
+                    observedEvents.forEach(function(i,j){
+                        if(i.indexOf(namespace) !== -1){
+                            currentEvent = i.split(namespace)[1];
+
+                            if(eventRegistry[currentEvent]){
+                                eventRegistry[currentEvent].many = manyLimit;
+                            }else{
+                                eventRegistry[currentEvent] = {
+                                    many: manyLimit
+                                };
+                            }
+                        }
+                    });
+
+                    elementsPool.push(this);
+                },
+                removed: function () {
+                    var i = eventQueue.indexOf(this);
+                    if (i >= 0) {
+                        eventQueue.splice(i, 1);
+                    }
+                }
+            });
+
+            /**
+             * @name: Name of the event we are notifying about
+             * @data: Data being passed through the event
+             */
+            function notify(name, data) {
+
+                // convert generic-signal event to named-signal event
+                // e.g polymer-eventemitter-foo
+                var eventInstance = new CustomEvent('polymer-eventemitter-' + name, {
+                    bubbles: true,
+                    detail: data
+                });
+
+                // wildcard which is always available
+                var wildcard = new CustomEvent('polymer-eventemitter-wildcard', {
+                    bubbles: true,
+                    detail: data
+                });
+
+                // for each signalling element, dispatch
+                // the relevant events.
+                elementsPool.forEach(function (s, i) {
+                    s.dispatchEvent(eventInstance);
+                    s.dispatchEvent(wildcard);
+                });
+
+            }
+
+            document.addEventListener('polymer-eventemitter', function (e) {
+                
+                /*
+                    In order for 'many'/once to work, we need to be able to
+                    stop firing any events for a specific name after N occurrences.
+                    This requires that we know the 'many' value first for a given
+                    event name.
+                */
+
+                var localName = e.detail.name;
+                var localData = e.detail.data;
+                var localMany = 0;
+
+                if(eventRegistry[localName] && typeof eventRegistry[localName].timesCalled == "number"){
+                    eventRegistry[localName].timesCalled++;
+                }else{
+                    eventRegistry[localName] = eventRegistry[localName] || {
+                        timesCalled: 1
+                    };
+                }
+
+                // Check against many value..
+                localMany = eventRegistry[localName].many;
+                if(localMany && typeof localMany == "number"){
+
+                    if(localMany === null){
+                        // many is unused or unlimited in fires
+                        notify(localName, localData);
+                    }else if(localMany > 0){
+                        //decrement
+                        eventRegistry[localName].many--;  
+                        notify(localName, localData);
+                    }else if(localMany === 0){
+                        // nothing.
+                        // exhausted all manys
+                    }
+
+                }
+
+            });
+
+        })();
+    </script>
+</polymer-element>
