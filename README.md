@@ -1,7 +1,7 @@
-my-polymer-elements
+polymer-eventemitter
 ===================
 
-**Event emitter element**
+**EventEmitter element**
 
 Event emitters trigger an event to which anyone can listen. Different libraries offer different implementations and for different purposes, but the basic idea is to provide a framework for issuing events and subscribing to them.
 
@@ -22,13 +22,13 @@ Ideally this might look like:
 <!--wildcards-->
 <polymer-element name="my-app">
   <template>
-    <polymer-signals on-polymer-signal-wildcard="{{fooSignal}}"></polymer-signals>
+    <polymer-eventemitter on-polymer-eventemitter-wildcard="{{fooEvent}}"></polymer-eventemitter>
     <content></cotnent>
   </template>
   <script>
     Polymer('my-app', {
-      fooSignal: function(e, detail, sender) {
-        this.innerHTML += '<br>[my-app] got a [' + detail + '] signal<br>';
+      fooEvent: function(e, detail, sender) {
+        this.innerHTML += '<br>[my-app] got a [' + detail + '] notification<br>';
       }
     });
   </script>
@@ -37,13 +37,13 @@ Ideally this might look like:
 <!--deliminators-->
 <polymer-element name="my-app">
   <template>
-    <polymer-signals on-polymer-signal-addy::foo="{{fooSignal}}" deliminator="::"></polymer-signals>
+    <polymer-eventemitter on-polymer-eventemitter-addy::foo="{{fooEvent}}" deliminator="::"></polymer-eventemitter>
     <content></cotnent>
   </template>
   <script>
     Polymer('my-app', {
-      fooSignal: function(e, detail, sender) {
-        this.innerHTML += '<br>[my-app] got a [' + detail + '] signal<br>';
+      fooEvent: function(e, detail, sender) {
+        this.innerHTML += '<br>[my-app] got a [' + detail + '] notification<br>';
       }
     });
   </script>
@@ -52,13 +52,13 @@ Ideally this might look like:
 <!--max listeners-->
 <polymer-element name="my-app">
   <template>
-    <polymer-signals on-polymer-signal-foo="{{fooSignal}}" maxListeners="10"></polymer-signals>
+    <polymer-eventemitter on-polymer-eventemitter-foo="{{fooEvent}}" maxListeners="10"></polymer-eventemitter>
     <content></cotnent>
   </template>
   <script>
     Polymer('my-app', {
-      fooSignal: function(e, detail, sender) {
-        this.innerHTML += '<br>[my-app] got a [' + detail + '] signal<br>';
+      fooEvent: function(e, detail, sender) {
+        this.innerHTML += '<br>[my-app] got a [' + detail + '] notification<br>';
       }
     });
   </script>
@@ -67,13 +67,13 @@ Ideally this might look like:
 <!--many-->
 <polymer-element name="my-app">
   <template>
-    <polymer-signals on-polymer-signal-foo="{{fooSignal}}" many="4"></polymer-signals>
+    <polymer-eventemitter on-polymer-eventemitter-foo="{{fooEvent}}" many="4"></polymer-eventemitter>
     <content></cotnent>
   </template>
   <script>
     Polymer('my-app', {
-      fooSignal: function(e, detail, sender) {
-        this.innerHTML += '<br>[my-app] got a [' + detail + '] signal<br>';
+      fooEvent: function(e, detail, sender) {
+        this.innerHTML += '<br>[my-app] got a [' + detail + '] notification<br>';
       }
     });
   </script>
