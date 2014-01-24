@@ -1,17 +1,11 @@
 <!--
-Copyright 2013 The Polymer Authors. All rights reserved.
-Use of this source code is governed by a BSD-style
-license that can be found in the LICENSE file.
-
-Maintainer:
-Addy Osmani
+Copyright 2014 Addy Osmani
 -->
 <!--
 
 Examples:
 
-An element listening for an event 'foo' will fire a callback 'fooSignal' when we
-detect it has been broadcast.
+An element listening for an event 'foo' will fire a callback 'fooSignal' when we detect it has been broadcast.
 
 <polymer-element name="my-app-a">
   <template>
@@ -28,8 +22,7 @@ detect it has been broadcast.
 </polymer-element>
 
 
-An element with a wildcard listener. Catches all events broadcast, firing 'fooWildcard' every
-time we detect a notification.
+An element with a wildcard listener. Catches all events broadcast, firing 'fooWildcard' every time we detect a notification.
 
 <polymer-element name="my-app-b">
   <template>
@@ -45,9 +38,7 @@ time we detect a notification.
   </script>
 </polymer-element>
 
-Listen for an event 'baz', N many times. Once 'baz' has been fired N times it will no longer
-do anything. Note: this differs from EventEmitter2 as its many fires an event N times then 
-removes it.
+Listen for an event 'baz', N many times. Once 'baz' has been fired N times it will no longer do anything. Note: this differs from EventEmitter2 as its many fires an event N times then removes it.
 
 <polymer-element name="my-app-c">
   <template>
@@ -79,7 +70,8 @@ Listen for an event 'faz', 1 many times.
   </script>
 </polymer-element>
 -->
-<polymer-element name="polymer-eventemitter" attributes="many maxListeners deliminator">
+<link rel="import" href="../polymer/polymer.html">
+<polymer-element name="polymer-eventemitter" attributes="many maxListeners">
     <script>
         (function () {
 
