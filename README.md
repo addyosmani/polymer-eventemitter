@@ -14,7 +14,7 @@ polymer-eventemitter
 
 The following are valid attributes supported by the element:
 
-* **on-event-<name>="{{callback}}**: subscribes to `event` notifications for an event with the name `<name>`. For example, if you setup `on-event-foo` and then somewhere in your application run `this.asyncFire('event', {name: "foo", data: "Foo!"});` this will trigger `callback`, passing the data specified.
+* **on-event-[name]="{{callback}}**: subscribes to `event` notifications for an event with the name `[name]`. For example, if you setup `on-event-foo` and then somewhere in your application run `this.asyncFire('event', {name: "foo", data: "Foo!"});` this will trigger `callback`, passing the data specified.
 * **on-event-wildcard**: similar to the above, but will trigger for any event fired.
 * **many="N"**: subscribes to an event N many times. E.g for `many="3"`, we will no longer execute the callback after the third occurrence.
 
