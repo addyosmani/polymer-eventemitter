@@ -9,7 +9,7 @@ An element listening for an event 'foo' will fire a callback 'fooSignal' when we
 
 <polymer-element name="my-app-a">
   <template>
-    <polymer-eventemitter on-polymer-eventemitter-foo="{{fooSignal}}"></polymer-eventemitter>
+    <polymer-eventemitter on-event-foo="{{fooSignal}}"></polymer-eventemitter>
     <content></content>
   </template>
   <script>
@@ -26,7 +26,7 @@ An element with a wildcard listener. Catches all events broadcast, firing 'fooWi
 
 <polymer-element name="my-app-b">
   <template>
-    <polymer-eventemitter on-polymer-eventemitter-wildcard="{{fooWildcard}}"></polymer-eventemitter>
+    <polymer-eventemitter on-event-wildcard="{{fooWildcard}}"></polymer-eventemitter>
     <content></content>
   </template>
   <script>
@@ -42,7 +42,7 @@ Listen for an event 'baz', N many times. Once 'baz' has been fired N times it wi
 
 <polymer-element name="my-app-c">
   <template>
-    <polymer-eventemitter on-polymer-eventemitter-baz="{{bazMany}}" many="3"></polymer-eventemitter>
+    <polymer-eventemitter on-event-baz="{{bazMany}}" many="3"></polymer-eventemitter>
     <content></content>
   </template>
   <script>
@@ -58,7 +58,7 @@ Listen for an event 'faz', 1 many times.
 
 <polymer-element name="my-app-d">
   <template>
-    <polymer-eventemitter on-polymer-eventemitter-faz="{{fazOnce}}" many="1"></polymer-eventemitter>
+    <polymer-eventemitter on-event-faz="{{fazOnce}}" many="1"></polymer-eventemitter>
     <content></content>
   </template>
   <script>
@@ -76,7 +76,7 @@ Listen for an event 'faz', 1 many times.
         (function () {
 
             // namespace
-            var namespace = 'on-polymer-eventemitter-';
+            var namespace = 'on-event-';
 
             // queue of signal elements
             var elementsPool = [];
@@ -147,13 +147,13 @@ Listen for an event 'faz', 1 many times.
 
                 // convert generic-signal event to named-signal event
                 // e.g polymer-eventemitter-foo
-                var eventInstance = new CustomEvent('polymer-eventemitter-' + name, {
+                var eventInstance = new CustomEvent('event-' + name, {
                     bubbles: true,
                     detail: data
                 });
 
                 // wildcard which is always available
-                var wildcard = new CustomEvent('polymer-eventemitter-wildcard', {
+                var wildcard = new CustomEvent('event-wildcard', {
                     bubbles: true,
                     detail: data
                 });
@@ -167,7 +167,7 @@ Listen for an event 'faz', 1 many times.
 
             }
 
-            document.addEventListener('polymer-eventemitter', function (e) {
+            document.addEventListener('event', function (e) {
                 
                 /*
                     In order for 'many'/once to work, we need to be able to

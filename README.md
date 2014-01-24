@@ -1,27 +1,39 @@
 polymer-eventemitter
 ===================
 
-> A Polymer element for triggering advanced events anyone can listen to.
+> A Polymer event emitter element with support for wildcards, many and once.
 
-Event emitters trigger an event to which anyone can listen. Different libraries offer different implementations and for different purposes, but the basic idea is to provide a framework for issuing events and subscribing to them.
+## Features
 
+* Basic events
+* Wildcards
+* Many
+* Once
 
-**Examples of what are supported:**
+## API
 
-An element listening for an event 'foo' will fire a callback 'fooSignal' when we detect it has been broadcast.
+The following are valid attributes supported by the element:
 
-### Basic events (a la Polymer's `fire`)
+* `on-event-<name>="{{callback}}`: subscribes to `event` notifications for an event with the name `<name>`. For example, if you setup `on-event-foo` and then somewhere in your application run `this.asyncFire('event', {name: "foo", data: "Foo!"});` this will trigger `callback`, passing the data specified.
+* `on-event-wildcard`: similar to the above, but will trigger for any event fired.
+* `many="N"`: subscribes to an event N many times. E.g for `many="3"`, we will no longer execute the callback after the third occurrence.
+
+## Examples
+
+### Basic events
+
+An element listening for an event 'foo' will fire a callback 'fooEvent' when we detect it has been broadcast.
 
 ```
 <polymer-element name="my-app-a">
   <template>
-    <polymer-eventemitter on-polymer-eventemitter-foo="{{fooSignal}}"></polymer-eventemitter>
+    <polymer-eventemitter on-event-foo="{{fooEvent}}"></polymer-eventemitter>
     <content></content>
   </template>
   <script>
     Polymer('my-app-a', {
-      fooSignal: function(e, detail, sender) {
-        this.innerHTML += '<br>[my-app-a] got a [' + detail + '] signal<br>';
+      fooEvent: function(e, detail, sender) {
+        this.innerHTML += '<br>[my-app-a] got a [' + detail + '] event<br>';
       }
     });
   </script>
@@ -35,13 +47,13 @@ An element with a wildcard listener. Catches all events broadcast, firing 'fooWi
 ```
 <polymer-element name="my-app-b">
   <template>
-    <polymer-eventemitter on-polymer-eventemitter-wildcard="{{fooWildcard}}"></polymer-eventemitter>
+    <polymer-eventemitter on-event-wildcard="{{fooWildcard}}"></polymer-eventemitter>
     <content></content>
   </template>
   <script>
     Polymer('my-app-b', {
       fooWildcard: function(e, detail, sender) {
-        this.innerHTML += '<br>[my-app-b] got a [' + detail + '] wildcard signal<br>';
+        this.innerHTML += '<br>[my-app-b] got a [' + detail + '] wildcard event<br>';
       }
     });
   </script>
@@ -55,13 +67,13 @@ Listen for an event 'baz', N many times. Once 'baz' has been fired N times it wi
 ```
 <polymer-element name="my-app-c">
   <template>
-    <polymer-eventemitter on-polymer-eventemitter-baz="{{bazMany}}" many="3"></polymer-eventemitter>
+    <polymer-eventemitter on-event-baz="{{bazMany}}" many="3"></polymer-eventemitter>
     <content></content>
   </template>
   <script>
     Polymer('my-app-c', {
       bazMany: function(e, detail, sender) {
-        this.innerHTML += '<br>[my-app-c] got a [' + detail + '] signal many<br>';
+        this.innerHTML += '<br>[my-app-c] got a [' + detail + '] event many<br>';
       }
     });
   </script>
@@ -75,23 +87,25 @@ Listen for an event 'faz', 1 many times.
 ```
 <polymer-element name="my-app-d">
   <template>
-    <polymer-eventemitter on-polymer-eventemitter-faz="{{fazOnce}}" many="1"></polymer-eventemitter>
+    <polymer-eventemitter on-event-faz="{{fazOnce}}" many="1"></polymer-eventemitter>
     <content></content>
   </template>
   <script>
     Polymer('my-app-d', {
       fazOnce: function(e, detail, sender) {
-        this.innerHTML += '<br>[my-app-d] got a [' + detail + '] signal once<br>';
+        this.innerHTML += '<br>[my-app-d] got a [' + detail + '] event once<br>';
       }
     });
   </script>
 </polymer-element>
 ```
 
-**Reference**
+## Inspired by
 
 * https://github.com/hij1nx/EventEmitter2
 * https://github.com/Wolfy87/EventEmitter
 * https://github.com/Polymer/polymer-elements/tree/master/polymer-signals
 
-Released under an MIT License.
+## License
+
+Released under a BSD license.
