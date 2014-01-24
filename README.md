@@ -10,6 +10,14 @@ polymer-eventemitter
 * Many
 * Once
 
+## Installation
+
+To install this element using [Bower](http://bower.io) run:
+
+```
+bower install polymer-eventemitter --save
+```
+
 ## API
 
 The following are valid attributes supported by the element:
