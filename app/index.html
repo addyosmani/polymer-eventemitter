@@ -1,0 +1,154 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="stylesheet" href="styles/main.css">
+
+        <!-- build:js scripts/vendor.js -->
+        <script src="bower_components/polymer/polymer.min.js"></script>
+        <!-- endbuild -->
+
+        <!-- Place your HTML imports here -->
+        <link rel="import" href="elements/polymer-eventemitter.html">
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="hero-unit">
+                <h1>polymer-eventemitter demo</h1>
+
+                <polymer-element name="my-element">
+                  <template>
+                    Hello
+                  </template>
+                  <script>
+                      /*
+                      AsyncFire tests
+                       */
+                    Polymer('my-element', {
+                      ready: function() {
+                        // Basic listeners
+                        this.asyncFire('polymer-eventemitter', {name: "foo", data: "Foo!"});
+                        this.asyncFire('polymer-eventemitter', {name: "bar", data: "Bar!"});
+
+                        //Delimiter
+                        this.asyncFire('polymer-eventemitter', {name: "addy::foo", data: "DelimTest"});
+
+                        // Many
+                        this.asyncFire('polymer-eventemitter', {name: "baz", data: "Baz1"});
+                        this.asyncFire('polymer-eventemitter', {name: "baz", data: "Baz2"});
+                        this.asyncFire('polymer-eventemitter', {name: "baz", data: "Baz3"});
+                        this.asyncFire('polymer-eventemitter', {name: "baz", data: "Baz4"});
+
+
+                          // Once
+                        this.asyncFire('polymer-eventemitter', {name: "faz", data: "Faz1"});
+                        this.asyncFire('polymer-eventemitter', {name: "faz", data: "Faz2"});
+                        this.asyncFire('polymer-eventemitter', {name: "faz", data: "Faz3"});
+                      }
+                    });
+                  </script>
+                </polymer-element>
+
+                <!--listen for a specific event name-->
+                <polymer-element name="my-app-a">
+                  <template>
+                    <polymer-eventemitter on-polymer-eventemitter-foo="{{fooSignal}}"></polymer-eventemitter>
+                    <content></content>
+                  </template>
+                  <script>
+                    Polymer('my-app-a', {
+                      fooSignal: function(e, detail, sender) {
+                        this.innerHTML += '<br>[my-app-a] got a [' + detail + '] signal<br>';
+                      }
+                    });
+                  </script>
+                </polymer-element>
+
+                <!--listen for an event name using wildcards-->
+                <!--wildcards will get any signals fired-->
+                <polymer-element name="my-app-b">
+                  <template>
+                    <polymer-eventemitter on-polymer-eventemitter-wildcard="{{fooWildcard}}"></polymer-eventemitter>
+                    <content></content>
+                  </template>
+                  <script>
+                    Polymer('my-app-b', {
+                      fooWildcard: function(e, detail, sender) {
+                        this.innerHTML += '<br>[my-app-b] got a [' + detail + '] wildcard signal<br>';
+                      }
+                    });
+                  </script>
+                </polymer-element>
+
+
+                <!--listen for an event name N many times-->
+                <polymer-element name="my-app-c">
+                  <template>
+                    <polymer-eventemitter on-polymer-eventemitter-baz="{{bazMany}}" many="3"></polymer-eventemitter>
+                    <content></content>
+                  </template>
+                  <script>
+                    Polymer('my-app-c', {
+                      bazMany: function(e, detail, sender) {
+                        this.innerHTML += '<br>[my-app-c] got a [' + detail + '] signal many<br>';
+                      }
+                    });
+                  </script>
+                </polymer-element>
+
+                <!--listen for an event name 1 many times-->
+                <polymer-element name="my-app-d">
+                  <template>
+                    <polymer-eventemitter on-polymer-eventemitter-faz="{{fazOnce}}" many="1"></polymer-eventemitter>
+                    <content></content>
+                  </template>
+                  <script>
+                    Polymer('my-app-d', {
+                      fazOnce: function(e, detail, sender) {
+                        this.innerHTML += '<br>[my-app-d] got a [' + detail + '] signal once<br>';
+                      }
+                    });
+                  </script>
+                </polymer-element>
+
+
+                <!--delimiters-->
+                <polymer-element name="my-app-e">
+                  <template>
+                    <polymer-signals on-polymer-signal-addy::foo="{{fooSignal}}" delimiter="::"></polymer-signals>
+                    <content></cotnent>
+                  </template>
+                  <script>
+                    Polymer('my-app-e', {
+                      fooSignal: function(e, detail, sender) {
+                        this.innerHTML += '<br>[my-app] got a [' + detail + '] signal<br>';
+                      }
+                    });
+                  </script>
+                </polymer-element>
+
+                <my-element></my-element>
+
+
+                <my-app-a></my-app-a>
+                <my-app-b></my-app-b>
+                <my-app-c></my-app-c>
+                <my-app-d></my-app-d>
+                <my-app-e></my-app-e>
+
+            </div>
+        </div>
+
+
+      
+</body>
+</html>
